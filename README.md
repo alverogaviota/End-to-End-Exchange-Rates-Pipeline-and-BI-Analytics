@@ -9,7 +9,7 @@ By separating raw data ingestion from analytical modeling, this project enables 
 ## Table of Contents
 
 - [Features](#features)
-- [Tech Stack](#techstack)
+- [Tech Stack](#tech-stack)
 
 ## Features
 
