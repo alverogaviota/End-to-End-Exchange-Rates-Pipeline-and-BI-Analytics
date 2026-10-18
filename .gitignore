@@ -34,7 +34,7 @@ MANIFEST
 *.spec
 
 # Ingestion Script logs
-log/
+logs/
 pipeline.log
 
 # Installer logs
