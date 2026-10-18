@@ -34,7 +34,8 @@ MANIFEST
 *.spec
 
 # Ingestion Script logs
-# log/
+log/
+pipeline.log
 
 # Installer logs
 pip-log.txt
