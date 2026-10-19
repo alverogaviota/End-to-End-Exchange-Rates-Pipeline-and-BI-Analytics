@@ -34,19 +34,14 @@ def aggregate():
             access_token=os.getenv("DATABRICKS_TOKEN")
         ) as connection:
             with connection.cursor() as cursor:
-                cursor = connection.cursor()
                 cursor.execute(f"""
                     CREATE OR REPLACE TABLE {CATALOG}.{GOLD_SCHEMA}.{TABLE_NAME} AS 
-                    WITH base_rates AS (
-                        SELECT rate_date, rate
-                        FROM {CATALOG}.{SILVER_SCHEMA}.{TABLE_NAME}
-                        )
-                    
+                
                 """)
         logger.info("Gold metrics refreshed")
 
     except Exception as e:
-        logger.info(f"Aggregation failed: {e}")
+        logger.error(f"Aggregation failed: {e}")
 
 if __name__ == "__main__":
     aggregate()

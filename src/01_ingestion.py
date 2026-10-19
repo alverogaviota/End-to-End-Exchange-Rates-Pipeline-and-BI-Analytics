@@ -13,7 +13,7 @@ logging.basicConfig(
     level=logging.INFO,  # Minimum level to capture
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     handlers=[
-        logging.FileHandler("logs/pipeline.log"),  # Write pipeline log to a file for production
+        logging.FileHandler("../logs/pipeline.log"),  # Write pipeline log to a file for production
         logging.StreamHandler(),  # Stream log into console
     ],
 )
@@ -58,10 +58,8 @@ def load_to_databricks(df):
             http_path=os.getenv("DATABRICKS_HTTP_PATH"),
             access_token=os.getenv("DATABRICKS_TOKEN")
         ) as connection:
-
             logger.info(f"Loading data....")
             with connection.cursor() as cursor:
-                cursor = connection.cursor()
                 cursor.execute(f"""
                     CREATE TABLE IF NOT EXISTS {CATALOG}.{SCHEMA}.{TABLE_NAME} (
                         date STRING,

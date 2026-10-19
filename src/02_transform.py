@@ -33,7 +33,6 @@ def transform():
             access_token=os.getenv("DATABRICKS_TOKEN")
         ) as connection:
             with connection.cursor() as cursor:
-                cursor = connection.cursor()
                 cursor.execute(f"""
                     CREATE OR REPLACE TABLE {CATALOG}.{SILVER_SCHEMA}.{TABLE_NAME}
                     AS SELECT
@@ -47,7 +46,7 @@ def transform():
         logger.info("Silver table refreshed")
 
     except Exception as e:
-        logger.info(f"Transformation failed: {e}")
+        logger.error(f"Transformation failed: {e}")
 
 if __name__ == "__main__":
     transform()
