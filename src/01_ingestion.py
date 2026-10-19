@@ -13,15 +13,13 @@ logging.basicConfig(
     level=logging.INFO,  # Minimum level to capture
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     handlers=[
-        logging.FileHandler("pipeline.log"),  # Write pipeline log to a file for production
+        logging.FileHandler("logs/pipeline.log"),  # Write pipeline log to a file for production
         logging.StreamHandler(),  # Stream log into console
     ],
 )
 
-# Set info on Pipeline logger
+# Set info on Transformation logger & Databricks logs into warning or higher
 logger = logging.getLogger("API Ingestion")
-
-# Set Databricks logs into warning or higher
 logging.getLogger("databricks.sql").setLevel(logging.WARNING)
 
 # Databricks Workspace
@@ -53,7 +51,6 @@ def extract_data(api_url):
         logger.error(f"Unexpected Error: {e}")
 
 def load_to_databricks(df):
-
     try:
         logger.info(f"Connect Databricks Server")
         with sql.connect(
