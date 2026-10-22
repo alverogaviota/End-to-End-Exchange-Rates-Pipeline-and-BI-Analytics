@@ -15,7 +15,7 @@ logging.basicConfig(
 )
 
 # Set info on Transformation logger & Databricks logs into warning or higher
-logger = logging.getLogger("Gold Aggregated Metrics")
+logger = logging.getLogger("Aggregation")
 logging.getLogger("databricks.sql").setLevel(logging.WARNING)
 
 # Databricks Workspace
@@ -48,16 +48,16 @@ rates_monthly = f"""
 CREATE OR REPLACE TABLE {CATALOG}.{GOLD_SCHEMA}.rates_monthly
 WITH monthly AS (
   SELECT
-    date_format(date_rate, 'yyyy-MM') AS month,
+    date_format(rate_date, 'yyyy-MM') AS month,
     base,
     quote,
-    ROUND(AVG(rate), 6) AS avg_rate,
+    AVG(rate) AS avg_rate,
     MAX(rate) AS high_rate,
     MIN(rate) AS low_rate,
-    max_by(rate, date_rate) AS closing_rate,
+    max_by(rate, rate_date) AS closing_rate,
     COUNT(*) AS days_with_data
-  FROM fx_pipeline_dev.silver.usd_idr_rates
-  GROUP BY date_format(date_rate, 'yyyy-MM'), base, quote
+  FROM {CATALOG}.{SILVER_SCHEMA}.usd_idr_rates
+  GROUP BY date_format(rate_date, 'yyyy-MM'), base, quote
 ),
 with_prev AS (
   SELECT
@@ -74,12 +74,12 @@ SELECT
   low_rate,
   closing_rate,
   days_with_data,
-  COALESCE(closing_rate - prev_closing_rate, 0) AS mom_change,
-  COALESCE(ROUND((closing_rate - prev_closing_rate) / prev_closing_rate * 100, 4), 0) AS mom_change_pct
+  COALESCE(closing_rate - prev_closing_rate, 0) AS mtm_change,
+  COALESCE(ROUND((closing_rate - prev_closing_rate) / prev_closing_rate * 100, 4), 0) AS mtm_change_pct
 FROM with_prev;
 """
 
-def agg_data_mart():
+def aggregate_metrics():
     try:
         logger.info(f"Connect Databricks Server")
         with sql.connect(
@@ -99,6 +99,6 @@ def agg_data_mart():
 
 if __name__ == "__main__":
     try:
-        agg_data_mart()
+        aggregate_metrics()
     except Exception as e:
         logger.error(f"Aggregation failed: {e}")
