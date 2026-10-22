@@ -9,7 +9,7 @@ logging.basicConfig(
     level=logging.INFO,  # Minimum level to capture
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     handlers=[
-        logging.FileHandler("logs/pipeline.log"),  # Write pipeline log to a file for production
+        logging.FileHandler("../logs/pipeline.log"),  # Write pipeline log to a file for production
         logging.StreamHandler(),  # Stream log into console
     ],
 )
@@ -36,7 +36,7 @@ def transform():
                 cursor.execute(f"""
                     CREATE OR REPLACE TABLE {CATALOG}.{SILVER_SCHEMA}.{TABLE_NAME}
                     AS SELECT
-                        CAST(date AS DATE) AS date_rate,
+                        CAST(date AS DATE) AS rate_date,
                         base,
                         quote,
                         CAST(rate AS DECIMAL(18, 6)) as rate
@@ -49,4 +49,7 @@ def transform():
         logger.error(f"Transformation failed: {e}")
 
 if __name__ == "__main__":
-    transform()
+    try:
+        transform()
+    except Exception as e:
+        logger.error(f"Transformation failed: {e}")
