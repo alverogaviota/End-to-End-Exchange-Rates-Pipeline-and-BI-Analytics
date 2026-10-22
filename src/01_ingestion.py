@@ -33,7 +33,7 @@ def extract_data(api_url):
             "base": "USD",
             "quotes": "IDR",
             "from": "2026-01-01",
-            "to": date.today().isoformat()
+            "to": "2026-06-30"
         }
 
         logger.info(f"Starting data ingestion from Frankfurter: {api_url}")
@@ -60,15 +60,6 @@ def load_to_databricks(df):
         ) as connection:
             logger.info(f"Loading data....")
             with connection.cursor() as cursor:
-                cursor.execute(f"""
-                    CREATE TABLE IF NOT EXISTS {CATALOG}.{SCHEMA}.{TABLE_NAME} (
-                        date STRING,
-                        base STRING,
-                        quote STRING,
-                        rate FLOAT
-                    ) USING DELTA;
-                """)
-
                 records = [tuple(row) for row in df.to_numpy()]
                 # 3. Insert records using parameterized queries for security & performance
                 insert_query = f"""
