@@ -39,7 +39,7 @@ def transform():
                         CAST(date AS DATE) AS rate_date,
                         base,
                         quote,
-                        CAST(rate AS DECIMAL(18, 6)) as rate
+                        CAST(rate AS DECIMAL(10, 2)) as rate
                     FROM {CATALOG}.{BRONZE_SCHEMA}.{TABLE_NAME}
                     WHERE date is NOT NULL AND rate > 0
                 """)
