@@ -1,15 +1,19 @@
-import os
-import logging
+import os, logging
+from pathlib import Path
+
 from databricks import sql
 from dotenv import load_dotenv
 
 load_dotenv()
 
+log_dir = Path("../logs")
+log_dir.mkdir(parents=True, exist_ok=True)
+
 logging.basicConfig(
     level=logging.INFO,  # Minimum level to capture
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     handlers=[
-        logging.FileHandler("../logs/pipeline.log"),  # Write pipeline log to a file for production
+        logging.FileHandler(log_dir / "pipeline.log"),  # Write pipeline log to a file for production
         logging.StreamHandler(),  # Stream log into console
     ],
 )
@@ -33,6 +37,7 @@ def transform():
             access_token=os.getenv("DATABRICKS_TOKEN")
         ) as connection:
             with connection.cursor() as cursor:
+                logger.info(f"Transforming Data...")
                 cursor.execute(f"""
                     CREATE OR REPLACE TABLE {CATALOG}.{SILVER_SCHEMA}.{TABLE_NAME}
                     AS SELECT
@@ -43,7 +48,7 @@ def transform():
                     FROM {CATALOG}.{BRONZE_SCHEMA}.{TABLE_NAME}
                     WHERE date is NOT NULL AND rate > 0
                 """)
-        logger.info("Silver table refreshed")
+        logger.info(f"Data Successfully Transformed in {CATALOG}.{SILVER_SCHEMA}.{TABLE_NAME}")
 
     except Exception as e:
         logger.error(f"Transformation failed: {e}")

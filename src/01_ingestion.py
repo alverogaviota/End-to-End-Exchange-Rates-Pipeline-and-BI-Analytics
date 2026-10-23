@@ -1,19 +1,22 @@
-import logging
-import requests
+from pathlib import Path
+import os, logging, requests
+from dotenv import load_dotenv
+
 import pandas as pd
 from datetime import date
 
-import os
 from databricks import sql
-from dotenv import load_dotenv
 
 load_dotenv()
+
+log_dir = Path("../logs")
+log_dir.mkdir(parents=True, exist_ok=True)
 
 logging.basicConfig(
     level=logging.INFO,  # Minimum level to capture
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     handlers=[
-        logging.FileHandler("../logs/pipeline.log"),  # Write pipeline log to a file for production
+        logging.FileHandler(log_dir / "pipeline.log"),  # Write pipeline log to a file for production
         logging.StreamHandler(),  # Stream log into console
     ],
 )
@@ -60,8 +63,22 @@ def load_to_databricks(df):
         ) as connection:
             logger.info(f"Loading data....")
             with connection.cursor() as cursor:
+                # Insert records using parameterized queries for security & performance
                 records = [tuple(row) for row in df.to_numpy()]
-                # 3. Insert records using parameterized queries for security & performance
+
+                # Dropping Table if exists
+                cursor.execute(f"DROP TABLE IF EXISTS {CATALOG}.{SCHEMA}.{TABLE_NAME}")
+
+                # Create
+                cursor.execute(f"""
+                    CREATE TABLE IF NOT EXISTS {CATALOG}.{SCHEMA}.{TABLE_NAME} (
+                        date DATE,
+                        base STRING,
+                        quote STRING,
+                        rate FLOAT
+                    )
+                """)
+
                 insert_query = f"""
                             INSERT INTO {CATALOG}.{SCHEMA}.{TABLE_NAME} 
                             (date, base, quote, rate)

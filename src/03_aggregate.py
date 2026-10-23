@@ -1,15 +1,19 @@
-import os
-import logging
+import os, logging
+from pathlib import Path
+
 from databricks import sql
 from dotenv import load_dotenv
 
 load_dotenv()
+  
+log_dir = Path("../logs")
+log_dir.mkdir(parents=True, exist_ok=True)
 
 logging.basicConfig(
     level=logging.INFO,  # Minimum level to capture
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     handlers=[
-        logging.FileHandler("../logs/pipeline.log"),  # Write pipeline log to a file for production
+        logging.FileHandler(log_dir / "pipeline.log"),  # Write pipeline log to a file for production
         logging.StreamHandler(),  # Stream log into console
     ],
 )
@@ -88,11 +92,12 @@ def aggregate_metrics():
             access_token=os.getenv("DATABRICKS_TOKEN")
         ) as connection:
             with connection.cursor() as cursor:
+                logger.info(f"Aggregating Data...")
                 # Daily Rates Table
                 cursor.execute(rates_daily)
                 # Monthly Rates Table
                 cursor.execute(rates_monthly)
-        logger.info("Gold metrics refreshed")
+        logger.info(f"Data Successfully Aggregated in {CATALOG}.{GOLD_SCHEMA}")
 
     except Exception as e:
         logger.error(f"Aggregation failed: {e}")
