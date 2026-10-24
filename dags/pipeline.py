@@ -1,6 +1,6 @@
-from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.bash import BashOperator
+from datetime import datetime, timedelta
 
 default_args = {
     'owner': 'airflow',
@@ -23,9 +23,9 @@ with DAG(
         task_id='run_ingestion',
         bash_command='python "/mnt/c/Users/AlveroGaviota/Desktop/End-to-End Exchange Rates Pipeline & BI Analytics/src/01_ingestion.py"',
         env={
-            "DATABRICKS_SERVER_HOSTNAME": "{{ conn.databricks_default.host}}",
-            "DATABRICKS_HTTP_PATH": "{{ conn.databricks_default.schema}}",
-            "DATABRICKS_TOKEN": "{{ conn.databricks_default.password}}",
+            "DATABRICKS_SERVER_HOSTNAME": "{{conn.databricks_default.host}}",
+            "DATABRICKS_HTTP_PATH": "{{conn.databricks_default.schema}}",
+            "DATABRICKS_TOKEN": "{{conn.databricks_default.password}}",
         },
         append_env=True
     )
@@ -34,9 +34,9 @@ with DAG(
         task_id='run_transformation',
         bash_command='python "/mnt/c/Users/AlveroGaviota/Desktop/End-to-End Exchange Rates Pipeline & BI Analytics/src/02_transform.py"',
         env={
-            "DATABRICKS_SERVER_HOSTNAME": "{{ conn.databricks_default.host}}",
-            "DATABRICKS_HTTP_PATH": "{{ conn.databricks_default.schema}}",
-            "DATABRICKS_TOKEN": "{{ conn.databricks_default.password}}",
+            "DATABRICKS_SERVER_HOSTNAME": "{{conn.databricks_default.host}}",
+            "DATABRICKS_HTTP_PATH": "{{conn.databricks_default.schema}}",
+            "DATABRICKS_TOKEN": "{{conn.databricks_default.password}}",
         },
         append_env=True
     )
@@ -45,9 +45,9 @@ with DAG(
         task_id='run_aggregation',
         bash_command='python "/mnt/c/Users/AlveroGaviota/Desktop/End-to-End Exchange Rates Pipeline & BI Analytics/src/03_aggregate.py"',
         env={
-            "DATABRICKS_SERVER_HOSTNAME": "{{ conn.databricks_default.host}}",
-            "DATABRICKS_HTTP_PATH": "{{ conn.databricks_default.schema}}",
-            "DATABRICKS_TOKEN": "{{ conn.databricks_default.password}}",
+            "DATABRICKS_SERVER_HOSTNAME": "{{conn.databricks_default.host}}",
+            "DATABRICKS_HTTP_PATH": "{{conn.databricks_default.schema}}",
+            "DATABRICKS_TOKEN": "{{conn.databricks_default.password}}",
         },
         append_env=True
     )
