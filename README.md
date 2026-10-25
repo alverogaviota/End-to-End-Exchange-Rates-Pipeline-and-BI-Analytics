@@ -12,7 +12,7 @@ By separating raw data ingestion from analytical modeling, this project enables 
 - [Tech Stack](#tech-stack)
 
 ## Architecture
-<img width="800" height="250" alt="fx_rates_pipeline_diagram" src="https://github.com/user-attachments/assets/ef7886a2-9dc0-4a65-8daa-d9989d46fccd"/>
+
 
 ## Features
 
