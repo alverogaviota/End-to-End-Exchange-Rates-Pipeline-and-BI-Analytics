@@ -1,5 +1,4 @@
 # End-to-End Exchange Rates Pipeline & BI Analytics (Frankfurter)
-
 The **Frankfurter Exchange Rates Pipeline** is an end-to-end ELT (Extract, Load, Transform) data engineering pipeline built to ingest, process, and USD/IDR rates.
 
 Utilizing data from the open-source **Frankfurter API** (backed by European Central Bank data), this project demonstrates modern data lakehouse architecture principles using the **Medallion Architecture (Bronze, Silver, Gold)** managed via **Databricks Unity Catalog** and orchestrated with **Apache Airflow**.
@@ -12,6 +11,7 @@ By separating raw data ingestion from analytical modeling, this project enables 
 - [Tech Stack](#tech-stack)
 
 ## Architecture
+<img width="1208" height="746" alt="FX_Rates_Pipeline drawio" src="https://github.com/user-attachments/assets/84fcace8-f589-4c20-8257-04a2ce1f8c6f"/>
 
 
 ## Features
