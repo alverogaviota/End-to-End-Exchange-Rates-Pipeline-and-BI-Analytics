@@ -14,8 +14,8 @@ with DAG(
     'exchange_rates_elt',
     default_args=default_args,
     description='Batch ELT pipeline for exchange rates',
-    schedule='@daily',
     start_date=datetime(2026, 1, 1),
+    schedule='30 8 * * *',
     catchup=False,
 ) as dag:
 
