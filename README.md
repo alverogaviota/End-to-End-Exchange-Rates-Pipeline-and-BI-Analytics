@@ -12,7 +12,30 @@ By separating raw data ingestion from analytical modeling, this project enables 
 - [Tech Stack](#tech-stack)
 
 ## Architecture
-  
+flowchart LR
+    API["Data Source<br/>Frankfurter API<br/>USD/IDR Exchange Rates"]:::external
+    Airflow["Orchestration<br/>Apache Airflow"]:::orchestration
+
+    subgraph Lakehouse ["Lakehouse — Databricks Unity Catalog"]
+        direction LR
+        Bronze[("🟤 Bronze<br/>Raw")]:::bronze
+        Silver[("🥈 Silver<br/>Cleansed")]:::silver
+        Gold[("🥇 Gold<br/>Aggregated Metrics")]:::gold
+        Bronze -->|Cleanse| Silver
+        Silver -->|Aggregate| Gold
+    end
+
+    Dashboards["Consumption<br/>Databricks AI/BI Dashboards"]:::external
+
+    API -->|Extract| Airflow
+    Airflow -->|Load raw data| Bronze
+    Gold -->|Query metrics| Dashboards
+
+    classDef external fill:#f0fdfa,stroke:#2dd4bf
+    classDef orchestration fill:#f5f3ff,stroke:#a78bfa
+    classDef bronze fill:#fff7ed,stroke:#fb923c
+    classDef silver fill:#f0f9ff,stroke:#38bdf8
+    classDef gold fill:#fefce8,stroke:#facc15
 
 
 ## Features
