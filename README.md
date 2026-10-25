@@ -9,13 +9,12 @@ By separating raw data ingestion from analytical modeling, this project enables 
 - [Arhictecture](#architecture)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
+- [Dashboard BI](#dashboard-bi)
 
 ## Architecture
 <img width="1208" height="746" alt="FX_Rates_Pipeline drawio" src="https://github.com/user-attachments/assets/84fcace8-f589-4c20-8257-04a2ce1f8c6f"/>
 
-
 ## Features
-
 - **API Ingestion:** Extract 1H 2026 of USD/IDR exchange rate data from the Frankfurter API.
 - **Medallion Architecture Implementation:**
   - 🟤 **Bronze Layer (Raw):** Ingests raw JSON payloads and formatted as pandas Dataframe.
@@ -23,14 +22,18 @@ By separating raw data ingestion from analytical modeling, this project enables 
   - 🥇 **Gold Layer (Business Aggregations):** Computes key metrics such as daily rates changes, daily percentage changes, monthly rates, and monthly rates percentage changes.
 - **Unified Governance with Unity Catalog:** Implements centralized data governance, metadata management, access controls, and table lineage across all medallion layers.
 - **Orchestration & Workflow Automation:** Automated end-to-end pipeline execution and monitoring using **Apache Airflow**.
+- **Live Analytics Dashboard:** Presenting key analytics metrics from **Gold Layer** data using **Databricks AI/BI**.
 
-### Tech Stack
+## Tech Stack
 - **Python**
 - **SQL**
 - **Databricks Unity Catalog**
 - **Databricks AI/BI**
 - **WSL**
 - **Apache Airflow**
+
+## Dashboard BI
+<img width="6000" height="4334" alt="Fx_Rates_BI_Light" src="https://github.com/user-attachments/assets/8610107c-94b3-4b61-bd1c-e6729c0033b8"/>
 
 ---
 
