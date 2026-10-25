@@ -69,7 +69,7 @@ def load_to_databricks(df):
                 # Dropping Table if exists
                 cursor.execute(f"DROP TABLE IF EXISTS {CATALOG}.{SCHEMA}.{TABLE_NAME}")
 
-                # Create
+                # Recreate Delta Table
                 cursor.execute(f"""
                     CREATE TABLE IF NOT EXISTS {CATALOG}.{SCHEMA}.{TABLE_NAME} (
                         date DATE,
