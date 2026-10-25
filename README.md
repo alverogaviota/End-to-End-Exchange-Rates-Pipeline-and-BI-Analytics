@@ -1,9 +1,9 @@
 # End-to-End Exchange Rates Pipeline & BI Analytics (Frankfurter)
-The **Frankfurter Exchange Rates Pipeline** is an end-to-end ELT (Extract, Load, Transform) data engineering pipeline built to ingest, process, and USD/IDR rates.
+The **Frankfurter Exchange Rates Pipeline** is an end-to-end ELT (Extract, Load, Transform) pipeline built to ingest, process, and aggregates USD/IDR rates.
 
 Utilizing data from the open-source **Frankfurter API** (backed by European Central Bank data), this project demonstrates modern data lakehouse architecture principles using the **Medallion Architecture (Bronze, Silver, Gold)** managed via **Databricks Unity Catalog** and orchestrated with **Apache Airflow**.
 
-By separating raw data ingestion from analytical modeling, this project enables robust data governance, lineage tracking, scalable currency conversion analysis, and near-real-time business intelligence dashboarding.
+By separating raw data ingestion from analytical modeling, this project enables robust data governance, lineage tracking, scalable currency conversion analysis, and business intelligence dashboarding.
 
 ## Table of Contents
 - [Arhictecture](#architecture)
@@ -16,25 +16,20 @@ By separating raw data ingestion from analytical modeling, this project enables 
 
 ## Features
 
-- **Automated Daily API Ingestion:** Scheduled extraction of raw FX exchange rate data from the Frankfurter API directly into storage.
+- **API Ingestion:** Extract 1H 2026 of USD/IDR exchange rate data from the Frankfurter API.
 - **Medallion Architecture Implementation:**
-  - 🟤 **Bronze Layer (Raw):** Ingests raw JSON payloads append-only with execution timestamp metadata and source tracking.
+  - 🟤 **Bronze Layer (Raw):** Ingests raw JSON payloads and formatted as pandas Dataframe.
   - 🥈 **Silver Layer (Cleansed & Enriched):** Flattens nested JSON currency schema, cleans data types, handles missing records, and enforces schema validation.
-  - 🥇 **Gold Layer (Business Aggregations):** Computes key metrics such as moving averages, daily percentage changes, volatility measures, and cross-currency conversion matrices.
+  - 🥇 **Gold Layer (Business Aggregations):** Computes key metrics such as daily rates changes, daily percentage changes, monthly rates, and monthly rates percentage changes.
 - **Unified Governance with Unity Catalog:** Implements centralized data governance, metadata management, access controls, and table lineage across all medallion layers.
 - **Orchestration & Workflow Automation:** Automated end-to-end pipeline execution and monitoring using **Apache Airflow**.
 
-
-- Live Source Ingestion
-- Scheduled Pipeline
-- Real Time Dashboards
-
 ### Tech Stack
-
-- **Databricks**
 - **Python**
 - **SQL**
-- **Unity Catalog**
+- **Databricks Unity Catalog**
+- **Databricks AI/BI**
+- **WSL**
 - **Apache Airflow**
 
 ---
